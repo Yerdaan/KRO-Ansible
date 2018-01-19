@@ -1,0 +1,63 @@
+# This role installs java from binaries for specific user
+# and adds it to .bash_profile
+---
+- name: "Check if java is already installed"
+  stat: 
+    path: "{{ ansible_env.HOME }}/{{ ansible_env.HOME }}/jdk1.{{ java_major }}.0_{{ java_minor }}"
+  register: java_installed
+
+- name: "Extract jdk binaries"
+  unarchive:
+    src: "jdk-{{ java_major }}u{{ java_minor }}-linux-x64.tar.gz"
+    dest: "{{ ansible_env.HOME }}/"
+  when: not java_installed.stat.exists
+
+- name: "Add symbolic link to java directory"
+  file:
+    src: "{{ ansible_env.HOME }}/jdk1.{{ java_major }}.0_{{ java_minor }}"
+    dest: "{{ ansible_env.HOME }}/jdk"
+    state: link
+
+- name: "Check JAVA_HOME in bash_profile"
+  command: awk /^JAVA_HOME/ {{ ansible_env.HOME }}/.bash_profile
+  register: java_home
+  changed_when: False
+  when: ansible_distribution ==  "CentOS"
+
+- name: "Update bash_profile on CentOS"
+  blockinfile:
+    path: "{{ ansible_env.HOME }}/.bash_profile"
+    marker: "# Added by Ansible"
+    insertafter: "export *"
+    content: |
+      JAVA_HOME={{ ansible_env.HOME }}/jdk
+      PATH=$PATH:$JAVA_HOME/bin
+      export PATH
+  when: ansible_distribution == "CentOS" and (java_home.stdout=="")
+
+# to niestety nie dziala tak jak chce
+- name: "Reload bash_profile"
+  shell: ". ~/.bash_profile"
+  when: (ansible_distribution == "CentOS")
+
+- name: "Check JAVA_HOME in bashrc"
+  command: awk /^JAVA_HOME/ {{ ansible_env.HOME }}/.bashrc
+  register: java_home
+  changed_when: False
+  when: ansible_distribution ==  "Ubuntu"
+
+- name: "Update bashrc on Ubuntu"
+  blockinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    marker: "# Added by Ansible"
+    insertafter: "export.*"
+    content: |
+      JAVA_HOME={{ ansible_env.HOME }}/jdk
+      export PATH=$PATH:$JAVA_HOME/bin
+  when: (ansible_distribution == "Ubuntu") and (java_home.stdout=="")
+
+# to tez nie dziala tak jak chce
+- name: "Reload bashrc"
+  shell: "{{ ansible_env.HOME }}/.bashrc && java -v"
+  when: (ansible_distribution == "Ubuntu")
+

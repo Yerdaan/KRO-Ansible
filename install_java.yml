@@ -1,0 +1,8 @@
+---
+- hosts: test
+  vars:
+    remote_user: "{{ remote_user }}"
+    java_major: "8"
+    java_minor: "151"
+  roles:
+    - install_java
