@@ -1,0 +1,17 @@
+# This role installs and configures snmp manager on CentOS
+---
+- name: Update repositories cache and install snmp snmp-mibs-downloader packages
+  yum: name="{{ item }}" state=present
+  with_items:
+    - snmp
+    - snmp-mibs-downloader
+  become: true
+  when: ansible_distribution == "CentOS"
+
+- name: "Allow the manager to import the MIB files"
+  lineinfile:
+    path: "/etc/snmp/snmp.conf"
+    regexp: '^#mibs'
+    line: 'mibs :'
+  become: true
+

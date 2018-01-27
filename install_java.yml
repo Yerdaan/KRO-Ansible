@@ -5,4 +5,6 @@
     java_major: "8"
     java_minor: "151"
   roles:
-    - install_java
+    - { role: install_java_ubuntu, when: ansible_distribution == 'Ubuntu' }
+    - { role: install_java_centos, when: ansible_distribution == "CentOS" }
+

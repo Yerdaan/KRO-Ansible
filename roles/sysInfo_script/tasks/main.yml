@@ -1,0 +1,14 @@
+# This role installs script for checking machine parameters
+---
+- name: "Copy sysInfo.sh file"
+  copy:
+    src: sysInfo.sh
+    dest: "{{ ansible_env.HOME }}/"
+    mode: 0750
+
+- name: "Add sysInfo to crontab"
+  cron:
+    name: "Start sysInfo script every 5 minutes."
+    minute: "*/5"
+    job: "cd {{ ansible_env.HOME }} ; ./sysInfo.sh"
+
