@@ -1,0 +1,25 @@
+---
+- name: Installs snmpd
+  apt: pkg=snmpd state=installed update_cache=true
+  become: true
+
+- name: Template snmpd.conf
+  template: src=templates/snmpd-conf.j2 dest=/etc/snmp/snmpd.conf owner=root group=root mode=644 backup=yes
+  become: true
+
+- name: Enables firewall port
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+  with_items:
+    - ssh
+    - 161
+    - 80
+  become: true
+
+- name: Restart snmpd
+  service:
+    name: snmpd
+    state: restarted
+  become: true
+

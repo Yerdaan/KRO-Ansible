@@ -1,0 +1,6 @@
+# Role for gathering info about machines
+---
+
+- name: "Dump machines state"
+  local_action: template src="state.j2" dest="~/ansible/reports/state_{{ ansible_host }}.log"
+

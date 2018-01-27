@@ -1,0 +1,10 @@
+State report for {{ ansible_host }} created on {{ ansible_date_time.date }} {{ ansible_date_time.time }}
+
+Processor name: {{ ansible_processor }} 
+  available threads: {{ ansible_processor_count }}
+Total memory size [MB]: {{ ansible_memtotal_mb }} 
+  available now: {{ ansible_memfree_mb }}
+Linux distribution: {{ ansible_distribution }} 
+  version: {{ ansible_distribution_version }}
+Disk statistics:
+  {{ansible_mounts }}

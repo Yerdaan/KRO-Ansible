@@ -1,0 +1,11 @@
+---
+- hosts: host2
+  vars:
+    remote_user: "{{ remote_user }}"
+    rouser: "userRO"
+    rouser_passwd: "userRO123"
+    rwuser: "userRW"
+    rwuser_passwd: "userRW123"
+  roles:
+    - snmp_agent
+

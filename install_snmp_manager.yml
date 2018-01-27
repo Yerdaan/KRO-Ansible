@@ -1,7 +1,7 @@
 ---
 - hosts: test
   vars:
-    ansible_user: root
+    ansible_user: matt
     remote_user: matt
   roles:
     - { role: install_snmp_manager_ubuntu, when: ansible_distribution == 'Ubuntu' }
