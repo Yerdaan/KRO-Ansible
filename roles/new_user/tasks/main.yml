@@ -1,0 +1,15 @@
+---
+- name: Creating group "{{ groupname }}"
+  group:
+    name: "{{ groupname }}"
+    system: yes
+- name: Creating user "{{ usrname }}" member of "{{ groupname }}"
+  user:
+    name: "{{ usrname }}"
+    groups: "{{ groupname }}"
+    append: yes
+    shell: /bin/bash
+    home: "/home/{{ usrname }}"
+    system: yes
+    password: "{{ upassword }}"
+    generate_ssh_key: yes

@@ -1,0 +1,35 @@
+# This role installs snmp daemon on CentOS
+---
+- name: Installs snmpd
+  yum: 
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - net-snmp
+    - net-snmp-utils
+  become: true
+
+- name: Template snmpd.conf
+  template: src=templates/snmpd-conf.j2 dest=/etc/snmp/snmpd.conf owner=root group=root mode=600 backup=yes
+  become: true
+
+- name: Enable specific firewall ports
+  firewalld:
+    port: "{{ item}}"
+    permanent: true
+    state: enabled
+  with_items:
+    - 22/tcp
+    - 22/udp
+    - 80/tcp
+    - 80/udp
+    - 161/tcp
+    - 161/udp
+  become: true
+
+- name: Start snmpd
+  systemd: 
+    state: started 
+    name: snmpd
+  become: true
+

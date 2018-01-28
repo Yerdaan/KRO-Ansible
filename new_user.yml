@@ -1,11 +1,11 @@
 ---
-- hosts: all
-  sudo: yes
+- hosts: ubuntu
+  become: true
   vars:
     remote_user: "{{ remote_user }}"
     groupname: "testowa"
     usrname: "TEST"
-    upassword: "$6$2jVTnjtw$vF9n2qpbJMYblo6jqdpNjHwCR0FkfNInReg2rNvY3F1G4t4pQEz.6KVWjYCZpBDSG3hRvrvupD1sx6RZLN.bs/"
+    upassword: $6$2jVTnjtw$vF9n2qpbJMYblo6jqdpNjHwCR0FkfNInReg2rNvY3F1G4t4pQEz.6KVWjYCZpBDSG3hRvrvupD1sx6RZLN.bs/
   roles:
     - new_user
 

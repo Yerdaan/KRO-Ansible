@@ -1,5 +1,5 @@
 ---
-- hosts: host2
+- hosts: centos
   vars:
     remote_user: "{{ remote_user }}"
     rouser: "userRO"
@@ -7,5 +7,6 @@
     rwuser: "userRW"
     rwuser_passwd: "userRW123"
   roles:
-    - snmp_agent
+    - { role: snmp_agent_ubuntu, when: ansible_distribution == 'Ubuntu' }
+    - { role: snmp_agent_centos, when: ansible_distribution == "CentOS" }
 

@@ -5,7 +5,6 @@
   with_items:
     - snmp
     - snmp-mibs-downloader
-  become: true
   when: ansible_distribution == "CentOS"
 
 - name: "Allow the manager to import the MIB files"
@@ -13,5 +12,4 @@
     path: "/etc/snmp/snmp.conf"
     regexp: '^#mibs'
     line: 'mibs :'
-  become: true
 

@@ -1,5 +1,5 @@
 ---
-- hosts: app
+- hosts: all
   vars:
     remote_user: "{{ remote_user }}"
     java_major: "8"

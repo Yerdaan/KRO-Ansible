@@ -1,8 +1,8 @@
 ---
-- hosts: test
+- hosts: host1
+  become: true
   vars:
-    ansible_user: matt
-    remote_user: matt
+    remote_user: {{ remote_user }}
   roles:
     - { role: install_snmp_manager_ubuntu, when: ansible_distribution == 'Ubuntu' }
     - { role: install_snmp_manager_centos, when: ansible_distribution == "CentOS" }
